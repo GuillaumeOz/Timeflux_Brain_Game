@@ -1,0 +1,26 @@
+graphs:
+    - id: p1_versus_p2
+      nodes:
+          - id: get_p1_p2
+            module: timeflux.nodes.zmq
+            class: Sub
+            params:
+                topics: [result_p1, result_p2]
+
+          - id: final_diff
+            module: app-module.nodes.result
+            class: ConcatResult
+
+          - id: debugg
+            module: timeflux.nodes.debug
+            class: Display
+
+      edges:
+          - source: get_p1_p2:result_p1
+            target: final_diff:p1
+          - source: get_p1_p2:result_p2
+            target: final_diff:p2
+          - source: final_diff
+            target: debugg
+
+      rate: 10

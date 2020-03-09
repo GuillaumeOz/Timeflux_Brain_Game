@@ -1,4 +1,6 @@
 import:
     - Broker.yml #le meme peu importe le mode
     - substitute_players.yml # chargement de replay deja enregistre
-    - first_mod.yml
+    - versus/meditation/player_1.yml # traitement des ondes p1 et p2 en parallele
+    - versus/meditation/player_2.yml 
+    - versus/meditation/join_p1_p2.yml 
