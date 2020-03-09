@@ -1,0 +1,15 @@
+name: team-env
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+- pip>=19.3
+- scikit-learn==0.22.0
+- scipy==1.3.1
+- pip:
+  - git+https://github.com/timeflux/timeflux  # timeflux core
+  - git+https://github.com/timeflux/timeflux_example # example pluggin
+  - git+https://github.com/timeflux/timeflux_dsp  # pluggin for digital signal processing
+  - git+https://github.com/timeflux/timeflux_ui # pluggin for timeflux JS UI
+  - git+https://github.com/timeflux/timeflux_bitalino  # bitalino driver
+  - git+https://github.com/N0panda/app_pluggin # my pluggins
