@@ -1,0 +1,9 @@
+graphs:
+    - id: broker
+      nodes:
+          - id: broker
+            module: timeflux.nodes.zmq
+            class: Broker
+
+### Broker basique, voir si on doit le changer 
+#pour un autre qui gere l'arret de recuperation de donnee

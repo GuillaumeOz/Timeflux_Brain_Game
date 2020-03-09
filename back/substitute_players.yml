@@ -1,0 +1,40 @@
+graphs:
+    - id: pub_test
+      nodes:
+          - id: simulate_player1
+            module: timeflux.nodes.hdf5
+            class: Replay
+            params:
+                filename: ~/Desktop/timeflux-stuff/hackathon/data/bitalino_eeg_A1.hdf5 # modifiable
+                keys:
+                    - /bitalino
+                speed: 1
+
+          - id: simulate_player2
+            module: timeflux.nodes.hdf5
+            class: Replay
+            params:
+                filename: ~/Desktop/timeflux-stuff/hackathon/data/bitalino_ecg_A1.hdf5 # modifiable
+                keys:
+                    - /bitalino
+                speed: 1
+
+          - id: publisher_p1
+            module: timeflux.nodes.zmq
+            class: Pub
+            params:
+                topic: player_1
+
+          - id: publisher_p2
+            module: timeflux.nodes.zmq
+            class: Pub
+            params:
+                topic: player_2
+
+      edges:
+          - source: simulate_player1:bitalino
+            target: publisher_p1
+          - source: simulate_player2:bitalino
+            target: publisher_p2
+
+      rate: 10

@@ -1,0 +1,4 @@
+import:
+    - Broker.yml #le meme peu importe le mode
+    - substitute_players.yml # chargement de replay deja enregistre
+    - first_mod.yml
