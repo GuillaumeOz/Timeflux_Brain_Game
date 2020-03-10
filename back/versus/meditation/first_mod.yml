@@ -96,7 +96,7 @@ graphs:
             class: Power
             params:
                  length: 3
-                 step: 1
+                 step: 0.5
 
           - id: log_p1                      #Log(abs_power) pour rapprocher les resultats
             module: app-module.nodes.reduct_diff_waves
@@ -125,6 +125,10 @@ graphs:
                 w_alpha: 1.1
                 w_beta: 0.8
                 w_gamma: 0.5
+
+          - id: final_diff
+            module: app-module.nodes.result
+            class: ConcatResult
 ##########################################################     /
 
 ################## Display et Debugg ######################     \
@@ -155,7 +159,7 @@ graphs:
           - source: log_p1
             target: scoring_p1
           - source: scoring_p1
-            target: debugg_ui:p1
+            target: final_diff:p1
 
    ################### player 2
           - source: get_players:player_2
@@ -174,5 +178,9 @@ graphs:
           - source: log_p2
             target: scoring_p2
           - source: scoring_p2
-            target: debugg_ui:p2
+            target: final_diff:p2
+
+          - source: final_diff
+            target: debugg_term
+
       rate: 10

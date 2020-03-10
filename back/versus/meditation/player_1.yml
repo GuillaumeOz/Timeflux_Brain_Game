@@ -84,9 +84,9 @@ graphs:
             module: timeflux.nodes.debug
             class: Display
 
-          - id: debugg_ui
-            module: timeflux_ui.nodes.ui
-            class: UI
+          #- id: debugg_ui
+          #  module: timeflux_ui.nodes.ui
+          #  class: UI
 ###########################################################     /
 
       edges:
