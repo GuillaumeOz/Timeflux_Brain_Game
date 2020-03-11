@@ -37,4 +37,4 @@ graphs:
           - source: simulate_player2:bitalino
             target: publisher_p2
 
-      rate: 10
+      rate: 2

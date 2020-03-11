@@ -4,4 +4,4 @@ import:
     - versus/concentration/player_1.yml # traitement des ondes p1 et p2 en parallele
     - versus/concentration/player_2.yml 
     - versus/concentration/join_p1_p2.yml
-    #- versus/meditation/first_mod.yml 
+      #- versus/meditation/first_mod.yml 

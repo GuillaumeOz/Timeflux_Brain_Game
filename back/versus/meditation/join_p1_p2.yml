@@ -15,6 +15,10 @@ graphs:
             module: timeflux.nodes.debug
             class: Display
 
+          - id: send_ui
+            module: timeflux_ui.nodes.ui
+            class: UI
+
       edges:
           - source: get_p1_p2:result_p1
             target: final_diff:p1
@@ -22,5 +26,7 @@ graphs:
             target: final_diff:p2
           - source: final_diff
             target: debugg
+          - source: final_diff
+            target: send_ui:result
 
-      rate: 10
+      rate: 2

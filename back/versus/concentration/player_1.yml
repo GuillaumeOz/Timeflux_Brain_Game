@@ -1,5 +1,5 @@
 graphs:
-    - id: first_mod # Recuperation du publisher (enregistrement ou de EEG) 
+    - id: player_1 # Recuperation du publisher (enregistrement ou de EEG) 
       nodes:
           - id: get_players
             module: timeflux.nodes.zmq
