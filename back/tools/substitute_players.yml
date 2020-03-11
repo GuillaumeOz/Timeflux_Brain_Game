@@ -14,7 +14,7 @@ graphs:
             module: timeflux.nodes.hdf5
             class: Replay
             params:
-                filename: ./data/bitalino_ecg_A1.hdf5 # modifiable
+                filename: ./data/bitalino_eeg_A1.hdf5 # modifiable
                 keys:
                     - /bitalino
                 speed: 1

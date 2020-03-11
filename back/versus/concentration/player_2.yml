@@ -1,0 +1,110 @@
+graphs:
+    - id: first_mod # Recuperation du publisher (enregistrement ou de EEG) 
+      nodes:
+          - id: get_players
+            module: timeflux.nodes.zmq
+            class: Sub
+            params:
+                topics: [player_2]
+
+          - id: formate_wave_p2
+            module: timeflux.nodes.query
+            class: LocQuery
+            params:
+                key: [A1]
+#############################################################    /
+
+##################### Filters ############################     \
+          - id: band_stop_p2               # Blocage des ondes dans un intervale [x, y]
+            module: timeflux_dsp.nodes.filters
+            class: IIRFilter
+            params:
+                frequencies: [47, 53] ## frequence eletrique en France 50hz (marge d'erreur) US=[55, 65]
+                filter_type: bandstop
+                order: 1              ## (order plus grand) = precision++ mais temps de traitement--
+
+          - id: band_pass_p2
+            module: timeflux_dsp.nodes.filters
+            class: IIRFilter
+            params:
+                frequencies: [1, 45]
+                filter_type: bandpass
+                order: 3
+##########################################################     /
+
+################### Separation des ondes #################     \
+          - id: split_p2
+            module: timeflux_dsp.nodes.filters  ## renvoi une Dataframe avec les 5 ondes split
+            class: FilterBank
+            params:
+                filters:
+                    'delta': {frequencies: [1, 3], order: 3}
+                    'theta': {frequencies: [4, 7], order: 3}
+                    'alpha': {frequencies: [8, 13], order: 3}
+                    'beta':  {frequencies: [14, 24], order: 3}
+                    'gamma': {frequencies: [25, 45], order: 3}
+          #          rate: 1000 # todo:  rather get from meta
+            design: butter
+##########################################################     /
+
+################# partie calcule  ########################     \
+          - id: abs_powers_p2                 #valeur accumule pour chaque ondes delta -> gamma
+            module: app-module.nodes.abs_power
+            class: Power
+            params:
+                 length: 3
+                 step: 0.5
+
+          - id: log_p2                      #Log(abs_power) pour rapprocher les resultats
+            module: app-module.nodes.reduct_diff_waves
+            class: Log
+
+          - id: scoring_p2                    # renvoi le score base sur la somme du pourcentage de chaques
+            module: app-module.nodes.scoring  # ondes par rapport a l'ensemble
+            class: Scoring 
+            params:                           #chaque % est multiplie par un poid 'w'
+                w_delta: 0.5                  #si l'ensemble des 'w' == 1 alors score = 1
+                w_theta: 0.8
+                w_alpha: 1.1
+                w_beta: 1.3
+                w_gamma: 1.6
+##########################################################     /
+
+################## Publisher #############################     \
+          - id: pub_result_p2
+            module: timeflux.nodes.zmq
+            class: Pub
+            params:
+                topic: result_p2
+##########################################################     /
+
+################## Display et Debugg ######################     \
+          - id: debugg_term
+            module: timeflux.nodes.debug
+            class: Display
+
+            #- id: debugg_ui
+            #module: timeflux_ui.nodes.ui
+            #class: UI
+###########################################################     /
+
+      edges:
+   #################### player 2
+          - source: get_players:player_2
+            target: formate_wave_p2
+
+          - source: formate_wave_p2
+            target: band_stop_p2
+          - source: band_stop_p2
+            target: band_pass_p2
+          - source: band_pass_p2
+            target: split_p2
+          - source: split_p2
+            target: abs_powers_p2
+          - source: abs_powers_p2
+            target: log_p2
+          - source: log_p2
+            target: scoring_p2
+          - source: scoring_p2
+            target: pub_result_p2
+      rate: 10
