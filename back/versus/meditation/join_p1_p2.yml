@@ -15,9 +15,11 @@ graphs:
             module: timeflux.nodes.debug
             class: Display
 
-          - id: send_ui
-            module: timeflux_ui.nodes.ui
-            class: UI
+          - id: send_result
+            module: app-module.nodes.write_fd
+            class: Insert
+            params:
+                path: "./log.txt"
 
       edges:
           - source: get_p1_p2:result_p1
@@ -27,6 +29,6 @@ graphs:
           - source: final_diff
             target: debugg
           - source: final_diff
-            target: send_ui:result
+            target: send_result
 
-      rate: 2
+      rate: 10
