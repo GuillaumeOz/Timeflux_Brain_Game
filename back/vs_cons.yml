@@ -1,6 +1,7 @@
 import:
     - ./tools/Broker.yml #le meme peu importe le mode
     - ./tools/substitute_players.yml # chargement de replay deja enregistre
+      #- ./tools/test_sub.yml
     - versus/concentration/player_1.yml # traitement des ondes p1 et p2 en parallele
     - versus/concentration/player_2.yml 
     - versus/concentration/join_p1_p2.yml
