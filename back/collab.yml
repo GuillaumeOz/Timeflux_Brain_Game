@@ -1,3 +1,5 @@
 import:
     - ./tools/Broker.yml
-    - ./tools/substitute_player.yml
+    - ./tools/substitute_players.yml
+    - ./collab/player_1.yml
+    - ./collab/player_2.yml
